@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.regex.Pattern;
 
 public class Tokenizer {
@@ -10,5 +11,11 @@ public class Tokenizer {
             this.regex = regex;
             this.token = token;
         }
+    }
+
+    private LinkedList<TokenInfo> tokenInfos;
+
+    public Tokenizer() {
+        tokenInfos = new LinkedList<>();
     }
 }
