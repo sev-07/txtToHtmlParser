@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Tokenizer {
@@ -49,6 +50,30 @@ public class Tokenizer {
         tokenizer.add("B", 4);
         tokenizer.add("I", 5);
         tokenizer.add(" ", 5);
-        tokenizer.add("[a-zA-Z.]*", 6);
+        tokenizer.add("[a-zA-Z .]*", 6);
     }
+
+    public void tokenize(String str) {
+        String s = new String(str);
+        tokens.clear();
+
+        while (!s.equals("")) {
+            boolean match = false;
+
+            for (TokenInfo info : tokenInfos) {
+                Matcher m = info.regex.matcher(s);
+                if (m.find()) {
+                    match = true;
+
+                    String tok = m.group().trim();
+                    tokens.add(new Token(info.token, tok));
+
+                    s = m.replaceFirst("");
+                    break;
+                }
+            }
+        }
+
+    }
+
 }
