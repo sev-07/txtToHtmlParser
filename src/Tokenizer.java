@@ -48,5 +48,7 @@ public class Tokenizer {
         tokenizer.add("#", 3);
         tokenizer.add("B", 4);
         tokenizer.add("I", 5);
+        tokenizer.add(" ", 5);
+        tokenizer.add("[a-zA-Z.]*", 6);
     }
 }
