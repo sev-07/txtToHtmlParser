@@ -44,13 +44,23 @@ public class Tokenizer {
 
     public static void main(String[] args) {
         Tokenizer tokenizer = new Tokenizer();
-        tokenizer.add("T", 1);
-        tokenizer.add("P", 2);
-        tokenizer.add("#", 3);
-        tokenizer.add("B", 4);
-        tokenizer.add("I", 5);
-        tokenizer.add(" ", 5);
+        tokenizer.add("T ", 1);
+        tokenizer.add("P ", 2);
+        tokenizer.add("# ", 3);
+        tokenizer.add("B ", 4);
+        tokenizer.add("I ", 5);
+//        tokenizer.add(" ", 5);
         tokenizer.add("[a-zA-Z .]*", 6);
+
+        try {
+            tokenizer.tokenize("T Some title");
+
+            for (Tokenizer.Token tok : tokenizer.getTokens()) {
+                System.out.println("" + tok.token + " " + tok.sequence);
+            }
+        } catch (ParserException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void tokenize(String str) {
@@ -65,15 +75,27 @@ public class Tokenizer {
                 if (m.find()) {
                     match = true;
 
-                    String tok = m.group().trim();
+                    String tok = m.group()/*.trim()*/;
                     tokens.add(new Token(info.token, tok));
 
                     s = m.replaceFirst("");
                     break;
                 }
             }
+
+            if (!match) throw new ParserException(
+                    "Unexpected character in input: " + s
+            );
         }
 
     }
 
+    private class ParserException extends RuntimeException {
+        public ParserException(String s) {
+        }
+    }
+
+    public LinkedList<Token> getTokens() {
+        return tokens;
+    }
 }
